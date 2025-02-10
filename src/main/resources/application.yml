@@ -1,0 +1,20 @@
+server:
+  port: 9712
+
+spring:
+  profiles:
+    active: local
+  application:
+    name: aums
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics
+  endpoint:
+    metrics:
+      enabled: true
+  metrics:
+    tags:
+      application: aums
