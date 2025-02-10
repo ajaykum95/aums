@@ -28,7 +28,7 @@ public class SubscriptionPlan extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(precision = 20, scale = 2, nullable = false)
+    @Column(nullable = false)
     private Double price;
 
     @Column(columnDefinition = "TEXT")
