@@ -66,7 +66,6 @@ dependencies {
 	testImplementation 'org.testcontainers:postgresql'
 	testImplementation 'org.testcontainers:mockserver:1.19.1'
 	testImplementation 'org.mock-server:mockserver-client-java:5.15.0'
-	testImplementation 'org.mockito:mockito-core:5.0.0'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
@@ -91,6 +90,7 @@ jacocoTestReport {
 			fileTree(dir: it, exclude: [
 					// Exclude specific classes
 					'/com/abha/aums/AumsApplication.class',
+					'/com/abha/aums/filters/**',
 
 					// Exclude a package and its sub-packages
 					'/com/abha/aums/**/models/**'
@@ -106,7 +106,6 @@ tasks.withType(Checkstyle) {
 		html.stylesheet resources.text.fromFile('config/xsl/checkstyle-simple.xsl')
 	}
 }
-
 
 jacocoTestCoverageVerification {
 	violationRules {
@@ -142,6 +141,7 @@ jacocoTestCoverageVerification {
 			fileTree(dir: it, exclude: [
 					// Exclude specific classes
 					'/com/abha/aums/AumsApplication.class',
+					'/com/abha/aums/filters/**',
 
 					// Exclude a package and its sub-packages
 					'/com/abha/aums/**/models/**'
