@@ -19,7 +19,8 @@ public class SubscriptionController {
     }
 
     @PostMapping
-    public List<SubscriptionPlanResponse> fetchSubscriptionPlans(RequestEntity<?> planRequestEntity){
+    public List<SubscriptionPlanResponse> fetchSubscriptionPlans(
+        RequestEntity<?> planRequestEntity){
         return subscriptionPlanService.fetchAllActiveSubscriptionPlans();
     }
 
