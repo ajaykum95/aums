@@ -8,20 +8,35 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller class for handling subscription plan-related requests.
+ * This class exposes APIs to fetch subscription plans.
+ */
 @RestController
 @RequestMapping("/api/plans")
 public class SubscriptionController {
 
-    private final SubscriptionPlanService subscriptionPlanService;
+  private final SubscriptionPlanService subscriptionPlanService;
 
-    public SubscriptionController(SubscriptionPlanService subscriptionPlanService) {
-        this.subscriptionPlanService = subscriptionPlanService;
-    }
+  /**
+   * Constructor to initialize the SubscriptionController with the required service.
+   *
+   * @param subscriptionPlanService the service responsible for handling subscription plans
+   */
+  public SubscriptionController(SubscriptionPlanService subscriptionPlanService) {
+    this.subscriptionPlanService = subscriptionPlanService;
+  }
 
-    @PostMapping
-    public List<SubscriptionPlanResponse> fetchSubscriptionPlans(
-        RequestEntity<?> planRequestEntity){
-        return subscriptionPlanService.fetchAllActiveSubscriptionPlans();
-    }
+  /**
+   * Fetches all active subscription plans.
+   *
+   * @param planRequestEntity the request entity containing request details
+   * @return a list of active subscription plans
+   */
+  @PostMapping
+  public List<SubscriptionPlanResponse> fetchSubscriptionPlans(
+      RequestEntity<?> planRequestEntity) {
+    return subscriptionPlanService.fetchAllActiveSubscriptionPlans();
+  }
 
 }

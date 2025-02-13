@@ -6,7 +6,6 @@ plugins {
 	id 'checkstyle'
 	id 'jacoco'
 	id 'pmd'
-
 }
 
 group = 'com.abha'

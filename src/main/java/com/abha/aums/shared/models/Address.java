@@ -14,6 +14,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Entity class representing an address.
+ * This class is mapped to the database table {@code tbl_address} and stores details
+ * about different addresses.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -22,37 +27,37 @@ import lombok.Setter;
 @Table(name = "tbl_address")
 public class Address extends BaseEntity {
 
-    @Column(nullable = false)
-    private Long parentId;
+  @Column(nullable = false)
+  private Long parentId;
 
-    @Column(nullable = false)
-    private boolean isDefault;
+  @Column(nullable = false)
+  private boolean isDefault;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private AddressType addressType;
+  @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
+  private AddressType addressType;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private AddressOwner addressOwner;
+  @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
+  private AddressOwner addressOwner;
 
-    @Column(nullable = false, columnDefinition = "TEXT", name = "address_line_1")
-    private String addressLine1;
+  @Column(nullable = false, columnDefinition = "TEXT", name = "address_line_1")
+  private String addressLine1;
 
-    @Column(columnDefinition = "TEXT", name = "address_line_2")
-    private String addressLine2;
+  @Column(columnDefinition = "TEXT", name = "address_line_2")
+  private String addressLine2;
 
-    @ManyToOne(targetEntity = Country.class)
-    @JoinColumn(name = "country_id", nullable = false)
-    private Country country;
+  @ManyToOne(targetEntity = Country.class)
+  @JoinColumn(name = "country_id", nullable = false)
+  private Country country;
 
-    @ManyToOne(targetEntity = State.class)
-    @JoinColumn(name = "state_id", nullable = false)
-    private State state;
+  @ManyToOne(targetEntity = State.class)
+  @JoinColumn(name = "state_id", nullable = false)
+  private State state;
 
-    @Column(nullable = false)
-    private String cityName;
+  @Column(nullable = false)
+  private String cityName;
 
-    @Column(nullable = false)
-    private String pinCode;
+  @Column(nullable = false)
+  private String pinCode;
 }

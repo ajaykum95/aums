@@ -7,17 +7,32 @@ import com.abha.sharedlibrary.shared.enums.Status;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Implementation of the {@link SubscriptionPlanDao} interface.
+ * This class provides the data access logic for retrieving subscription plans based on status.
+ */
 @Repository
 public class SubscriptionPlanDaoImpl implements SubscriptionPlanDao {
 
-    private final SubscriptionPlanRepo subscriptionPlanRepo;
+  private final SubscriptionPlanRepo subscriptionPlanRepo;
 
-    public SubscriptionPlanDaoImpl(SubscriptionPlanRepo subscriptionPlanRepo) {
-        this.subscriptionPlanRepo = subscriptionPlanRepo;
-    }
+  /**
+   * Constructs a new {@code SubscriptionPlanDaoImpl} with the specified repository.
+   *
+   * @param subscriptionPlanRepo the repository used to access subscription plan data
+   */
+  public SubscriptionPlanDaoImpl(SubscriptionPlanRepo subscriptionPlanRepo) {
+    this.subscriptionPlanRepo = subscriptionPlanRepo;
+  }
 
-    @Override
-    public List<SubscriptionPlan> fetchAllSubscriptionPlanByStatus(Status status) {
-        return subscriptionPlanRepo.findByStatus(status);
-    }
+  /**
+   * Retrieves all subscription plans with the specified status.
+   *
+   * @param status the status of the subscription plans to retrieve
+   * @return a list of subscription plans matching the specified status
+   */
+  @Override
+  public List<SubscriptionPlan> fetchAllSubscriptionPlanByStatus(Status status) {
+    return subscriptionPlanRepo.findByStatus(status);
+  }
 }

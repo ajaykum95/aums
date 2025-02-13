@@ -14,6 +14,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Entity class representing a subscription plan.
+ * This class is mapped to the database table {@code tbl_subscription_plan} and stores
+ * details about different subscription plans, including type, price, description, and cycle.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -23,17 +28,17 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "tbl_subscription_plan")
 public class SubscriptionPlan extends BaseEntity {
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private PlanType planType;
+  @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
+  private PlanType planType;
 
-    @Column(nullable = false)
-    private Double price;
+  @Column(nullable = false)
+  private Double price;
 
-    @Column(columnDefinition = "TEXT")
-    private String description;
+  @Column(columnDefinition = "TEXT")
+  private String description;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private PlanCycle planCycle;
+  @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
+  private PlanCycle planCycle;
 }

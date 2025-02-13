@@ -9,6 +9,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Entity class representing an application subscriber.
+ * This class is mapped to the database table {@code tbl_app_subscriber} and
+ * stores subscriber-related information.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -17,11 +22,11 @@ import lombok.Setter;
 @Table(name = "tbl_app_subscriber")
 public class AppSubscriber extends BaseEntity {
 
-    @Column(nullable = false)
-    private String name;
+  @Column(nullable = false)
+  private String name;
 
-    @Column(nullable = false)
-    private String email;
+  @Column(nullable = false)
+  private String email;
 
-    private String phone;
+  private String phone;
 }

@@ -16,6 +16,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Entity class representing a feature associated with a subscription plan.
+ * This class is mapped to the database table {@code tbl_plan_feature} and stores details
+ * about the features available in different subscription plans.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -25,17 +30,17 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "tbl_plan_feature")
 public class PlanFeature extends BaseEntity {
 
-    @ManyToOne(targetEntity = SubscriptionPlan.class)
-    @JoinColumn(name = "subscription_plan_id", nullable = false)
-    private SubscriptionPlan subscriptionPlan;
+  @ManyToOne(targetEntity = SubscriptionPlan.class)
+  @JoinColumn(name = "subscription_plan_id", nullable = false)
+  private SubscriptionPlan subscriptionPlan;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private FeatureType featureType;
+  @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
+  private FeatureType featureType;
 
-    @Min(value = 1, message = "Minimum 1 feature value required!")
-    private int featureValue;
+  @Min(value = 1, message = "Minimum 1 feature value required!")
+  private int featureValue;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String featureDescription;
+  @Column(nullable = false, columnDefinition = "TEXT")
+  private String featureDescription;
 }

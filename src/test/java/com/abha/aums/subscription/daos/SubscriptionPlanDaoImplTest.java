@@ -1,15 +1,16 @@
 package com.abha.aums.subscription.daos;
 
-import com.abha.aums.subscription.daos.impl.PlanFeatureDaoImpl;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 import com.abha.aums.subscription.daos.impl.SubscriptionPlanDaoImpl;
-import com.abha.aums.subscription.models.PlanFeature;
 import com.abha.aums.subscription.models.SubscriptionPlan;
-import com.abha.aums.subscription.repositories.PlanFeatureRepository;
 import com.abha.aums.subscription.repositories.SubscriptionPlanRepo;
 import com.abha.sharedlibrary.shared.enums.Status;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Tags;
@@ -19,10 +20,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class SubscriptionPlanDaoImplTest {

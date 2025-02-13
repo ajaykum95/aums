@@ -15,44 +15,66 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+/**
+ * Service implementation for managing subscription plans.
+ */
 @Service
 public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
 
-    private final SubscriptionPlanDao subscriptionPlanDao;
-    private final PlanFeatureService planFeatureService;
+  private final SubscriptionPlanDao subscriptionPlanDao;
+  private final PlanFeatureService planFeatureService;
 
-    @Autowired
-    public SubscriptionPlanServiceImpl(
-            SubscriptionPlanDao subscriptionPlanDao, PlanFeatureService planFeatureService) {
-        this.subscriptionPlanDao = subscriptionPlanDao;
-        this.planFeatureService = planFeatureService;
-    }
+  /**
+   * Constructor for SubscriptionPlanServiceImpl.
+   *
+   * @param subscriptionPlanDao the DAO for subscription plans
+   * @param planFeatureService  the service for fetching plan features
+   */
+  @Autowired
+  public SubscriptionPlanServiceImpl(
+      SubscriptionPlanDao subscriptionPlanDao, PlanFeatureService planFeatureService) {
+    this.subscriptionPlanDao = subscriptionPlanDao;
+    this.planFeatureService = planFeatureService;
+  }
 
-    @Override
-    public List<SubscriptionPlanResponse> fetchAllActiveSubscriptionPlans() {
-        List<SubscriptionPlan> subscriptionPlans = subscriptionPlanDao.fetchAllSubscriptionPlanByStatus(Status.ACTIVE);
-        return mapToSubscriptionPlanResponse(subscriptionPlans);
-    }
+  @Override
+  public List<SubscriptionPlanResponse> fetchAllActiveSubscriptionPlans() {
+    List<SubscriptionPlan> subscriptionPlans =
+        subscriptionPlanDao.fetchAllSubscriptionPlanByStatus(Status.ACTIVE);
+    return mapToSubscriptionPlanResponse(subscriptionPlans);
+  }
 
-    public List<SubscriptionPlanResponse> mapToSubscriptionPlanResponse(
-            List<SubscriptionPlan> subscriptionPlans) {
-        if (CollectionUtils.isEmpty(subscriptionPlans)) {
-            return new ArrayList<>();
-        }
-        return subscriptionPlans.stream()
-                .map(this::mapToSubscriptionPlanResponse)
-                .collect(Collectors.toList());
+  /**
+   * Fetches all active subscription plans.
+   *
+   * @return a list of active subscription plan responses
+   */
+  public List<SubscriptionPlanResponse> mapToSubscriptionPlanResponse(
+      List<SubscriptionPlan> subscriptionPlans) {
+    if (CollectionUtils.isEmpty(subscriptionPlans)) {
+      return new ArrayList<>();
     }
+    return subscriptionPlans.stream()
+        .map(this::mapToSubscriptionPlanResponse)
+        .collect(Collectors.toList());
+  }
 
-    private SubscriptionPlanResponse mapToSubscriptionPlanResponse(SubscriptionPlan subscriptionPlan) {
-        List<PlanFeature> planFeatures = planFeatureService.fetchAllPlanFeatures(subscriptionPlan);
-        return SubscriptionPlanResponse.builder()
-                .id(subscriptionPlan.getId())
-                .planType(subscriptionPlan.getPlanType())
-                .planCycle(subscriptionPlan.getPlanCycle())
-                .description(subscriptionPlan.getDescription())
-                .price(subscriptionPlan.getPrice())
-                .planFeatureResponses(ObjectMapperUtil.mapToPlanFeatureResponse(planFeatures))
-                .build();
-    }
+  /**
+   * Maps a list of SubscriptionPlan entities to SubscriptionPlanResponse DTOs.
+   *
+   * @param subscriptionPlan the list of subscription plans
+   * @return a list of subscription plan responses
+   */
+  private SubscriptionPlanResponse mapToSubscriptionPlanResponse(
+      SubscriptionPlan subscriptionPlan) {
+    List<PlanFeature> planFeatures = planFeatureService.fetchAllPlanFeatures(subscriptionPlan);
+    return SubscriptionPlanResponse.builder()
+        .id(subscriptionPlan.getId())
+        .planType(subscriptionPlan.getPlanType())
+        .planCycle(subscriptionPlan.getPlanCycle())
+        .description(subscriptionPlan.getDescription())
+        .price(subscriptionPlan.getPrice())
+        .planFeatureResponses(ObjectMapperUtil.mapToPlanFeatureResponse(planFeatures))
+        .build();
+  }
 }

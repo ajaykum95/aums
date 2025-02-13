@@ -17,6 +17,11 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+/**
+ * Base entity class that provides common fields for database entities.
+ * This class includes fields for ID, creation timestamp, update timestamp, and status.
+ * It is annotated with {@code @MappedSuperclass}, meaning its fields are inherited by subclasses.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -24,18 +29,18 @@ import org.hibernate.annotations.UpdateTimestamp;
 @SuperBuilder
 @MappedSuperclass
 public class BaseDbEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
-    private Date createdAt;
+  @CreationTimestamp
+  @Column(nullable = false, updatable = false)
+  private Date createdAt;
 
-    @UpdateTimestamp
-    private Date updatedAt;
+  @UpdateTimestamp
+  private Date updatedAt;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Status status;
+  @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
+  private Status status;
 }
