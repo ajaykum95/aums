@@ -24,9 +24,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 
 @ExtendWith(MockitoExtension.class)
-public class SubscriptionControllerTest {
+public class SubscriptionPlanControllerTest {
   @InjectMocks
-  private SubscriptionController subscriptionController;
+  private SubscriptionPlanController subscriptionPlanController;
 
   @Mock
   private SubscriptionPlanService subscriptionPlanService;
@@ -44,7 +44,7 @@ public class SubscriptionControllerTest {
     when(subscriptionPlanService.fetchAllActiveSubscriptionPlans()).
         thenReturn(Collections.singletonList(SubscriptionPlanResponse.builder().id(1L).build()));
     List<SubscriptionPlanResponse> subscriptionPlanResponses =
-        subscriptionController.fetchSubscriptionPlans(requestEntity);
+        subscriptionPlanController.fetchSubscriptionPlans(requestEntity);
     assertNotNull(subscriptionPlanResponses);
     assertEquals(1, subscriptionPlanResponses.size());
   }

@@ -14,16 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/plans")
-public class SubscriptionController {
+public class SubscriptionPlanController {
 
   private final SubscriptionPlanService subscriptionPlanService;
 
   /**
-   * Constructor to initialize the SubscriptionController with the required service.
+   * Constructor to initialize the SubscriptionPlanController with the required service.
    *
    * @param subscriptionPlanService the service responsible for handling subscription plans
    */
-  public SubscriptionController(SubscriptionPlanService subscriptionPlanService) {
+  public SubscriptionPlanController(SubscriptionPlanService subscriptionPlanService) {
     this.subscriptionPlanService = subscriptionPlanService;
   }
 
