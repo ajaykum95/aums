@@ -1,13 +1,15 @@
 package com.abha.aums.subscription.utils;
 
+import com.abha.aums.subscription.models.AppSubscriber;
 import com.abha.aums.subscription.models.PlanFeature;
-import com.abha.aums.subscription.models.SubscriptionPlan;
+import com.abha.aums.users.models.User;
+import com.abha.sharedlibrary.aums.request.SignupRequest;
 import com.abha.sharedlibrary.aums.response.PlanFeatureResponse;
-import com.abha.sharedlibrary.aums.response.SubscriptionPlanResponse;
+import com.abha.sharedlibrary.shared.enums.Status;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
+import org.springframework.http.RequestEntity;
 import org.springframework.util.CollectionUtils;
 
 /**
@@ -43,6 +45,26 @@ public class ObjectMapperUtil {
         .featureType(planFeature.getFeatureType())
         .featureValue(planFeature.getFeatureValue())
         .featureDescription(planFeature.getFeatureDescription())
+        .build();
+  }
+
+  public AppSubscriber mapToSaveSubscriber(
+      RequestEntity<SignupRequest> signupRequestRequestEntity) {
+    SignupRequest signupRequest = signupRequestRequestEntity.getBody();
+    return AppSubscriber.builder()
+        .firstName(signupRequest.getFirstName())
+        .lastName(signupRequest.getLastName())
+        .email(signupRequest.getEmail())
+        .status(Status.ACTIVE)
+        .createdBy("0")
+        .build();
+  }
+
+  public User mapToSaveUser(RequestEntity<SignupRequest> signupRequestRequestEntity,
+                            AppSubscriber savedAppSubscriber) {
+    SignupRequest signupRequest = signupRequestRequestEntity.getBody();
+    return User.builder()
+        .appSubscriptions(savedAppSubscriber)
         .build();
   }
 }

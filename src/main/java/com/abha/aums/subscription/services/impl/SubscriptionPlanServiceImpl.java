@@ -7,9 +7,11 @@ import com.abha.aums.subscription.services.PlanFeatureService;
 import com.abha.aums.subscription.services.SubscriptionPlanService;
 import com.abha.aums.subscription.utils.ObjectMapperUtil;
 import com.abha.sharedlibrary.aums.response.SubscriptionPlanResponse;
+import com.abha.sharedlibrary.shared.enums.PlanType;
 import com.abha.sharedlibrary.shared.enums.Status;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +44,11 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
     List<SubscriptionPlan> subscriptionPlans =
         subscriptionPlanDao.fetchAllSubscriptionPlanByStatus(Status.ACTIVE);
     return mapToSubscriptionPlanResponse(subscriptionPlans);
+  }
+
+  @Override
+  public Optional<SubscriptionPlan> fetchPlanByTypeAndStatus(PlanType planType, Status status) {
+    return subscriptionPlanDao.findByPlanTypeAndStatus(planType, status);
   }
 
   /**
