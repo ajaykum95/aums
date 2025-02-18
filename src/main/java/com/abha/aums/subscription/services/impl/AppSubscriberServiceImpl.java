@@ -59,8 +59,13 @@ public class AppSubscriberServiceImpl implements AppSubscriberService {
         mapToSaveAppSubscriptions(savedAppSubscriber));
     User user = ObjectMapperUtil.mapToSaveUser(signupRequestRequestEntity, appSubscriptions, pictureDocId);
     User savedUser = userService.saveUser(user);
-    notificationService.sendEmailVerificationMail(savedUser);
+    sendVerifyMailToSubscriber(savedUser);
     return new SignupResponse(savedAppSubscriber.getId());
+  }
+
+  private void sendVerifyMailToSubscriber(User savedUser) {
+    String params = ObjectMapperUtil.buildEmailVerificationTemplateParams(savedUser);
+    notificationService.sendEmailVerificationMail();
   }
 
   private void validateSubscriberAnUser(SignupRequest signupRequest) {
