@@ -1,10 +1,14 @@
 package com.abha.aums.subscription.utils;
 
 import com.abha.aums.subscription.models.AppSubscriber;
+import com.abha.aums.subscription.models.AppSubscriptions;
 import com.abha.aums.subscription.models.PlanFeature;
 import com.abha.aums.users.models.User;
+import com.abha.aums.utils.CommonUtils;
+import com.abha.aums.utils.SecurityUtil;
 import com.abha.sharedlibrary.aums.request.SignupRequest;
 import com.abha.sharedlibrary.aums.response.PlanFeatureResponse;
+import com.abha.sharedlibrary.shared.enums.Gender;
 import com.abha.sharedlibrary.shared.enums.Status;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,10 +65,21 @@ public class ObjectMapperUtil {
   }
 
   public User mapToSaveUser(RequestEntity<SignupRequest> signupRequestRequestEntity,
-                            AppSubscriber savedAppSubscriber) {
+                            AppSubscriptions appSubscriptions, Integer pictureDocId) {
     SignupRequest signupRequest = signupRequestRequestEntity.getBody();
     return User.builder()
-        .appSubscriptions(savedAppSubscriber)
+        .appSubscriptions(appSubscriptions)
+        .profilePictureId(pictureDocId)
+        .firstName(signupRequest.getFirstName())
+        .lastName(signupRequest.getLastName())
+        .gender(Gender.NTS)
+        .email(signupRequest.getEmail())
+        .isEmailVerified(false)
+        .isMobileVerified(false)
+        .password(SecurityUtil.hashPassword(signupRequest.getPassword()))
+        .status(Status.ACTIVE)
+        .createdBy("0")
+        .token(SecurityUtil.generateSecureToken())
         .build();
   }
 }

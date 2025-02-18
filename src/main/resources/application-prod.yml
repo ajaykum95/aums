@@ -15,3 +15,7 @@ spring:
     hibernate:
       ddl-auto: false
     show-sql: false
+
+template:
+  emails:
+    emailVerify: 1

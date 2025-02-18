@@ -20,7 +20,9 @@ public enum AbhaExceptions implements BusinessExceptionDefintion {
   ACCOUNT_ALREADY_PRESENT(1005, ErrorCategory.ERROR, ExceptionTypes.VALIDATION_ERROR,
       "Account already exist!"),
   TRIAL_PLAN_MISSING(1006, ErrorCategory.ERROR, ExceptionTypes.INTERNAL_ERROR,
-      "Trial plan not found!");
+      "Trial plan not found!"),
+  USER_ACCOUNT_ALREADY_PRESENT(1007, ErrorCategory.ERROR, ExceptionTypes.BAD_REQUEST_ERROR,
+      "User account already present!");
 
   private final int businessErrorCode;
   private final ErrorCategory errorCategory;

@@ -33,6 +33,11 @@ public class User extends BaseEntity {
   private AppSubscriptions appSubscriptions;
 
   @Column(nullable = false)
+  private String firstName;
+
+  private String lastName;
+
+  @Column(nullable = false)
   private Integer profilePictureId;
 
   @Column(nullable = false)

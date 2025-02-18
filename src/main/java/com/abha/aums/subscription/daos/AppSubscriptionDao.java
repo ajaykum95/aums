@@ -1,7 +1,7 @@
-package com.abha.aums.subscription.services;
+package com.abha.aums.subscription.daos;
 
 import com.abha.aums.subscription.models.AppSubscriptions;
 
-public interface AppSubscriptionService {
+public interface AppSubscriptionDao {
   AppSubscriptions saveAppSubscription(AppSubscriptions appSubscriptions);
 }

@@ -22,6 +22,7 @@ import com.abha.sharedlibrary.shared.enums.PlanType;
 import com.abha.sharedlibrary.shared.enums.Status;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.RequestEntity;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,8 @@ public class AppSubscriberServiceImpl implements AppSubscriberService {
   private final NotificationService notificationService;
   private final SubscriptionPlanService subscriptionPlanService;
   private final AppSubscriptionService appSubscriptionService;
+  @Value("${profile.picture.default.pictureDocId}")
+  private Integer pictureDocId;
 
   @Autowired
   public AppSubscriberServiceImpl(
@@ -49,15 +52,22 @@ public class AppSubscriberServiceImpl implements AppSubscriberService {
   @Override
   public SignupResponse registerSubscriber(RequestEntity<SignupRequest> signupRequestRequestEntity) {
     SignupRequest signupRequest = signupRequestRequestEntity.getBody();
+    validateSubscriberAnUser(signupRequest);
+    AppSubscriber savedAppSubscriber = appSubscriberDao.saveAppSubscriber(
+        ObjectMapperUtil.mapToSaveSubscriber(signupRequestRequestEntity));
+    AppSubscriptions appSubscriptions = appSubscriptionService.saveAppSubscription(
+        mapToSaveAppSubscriptions(savedAppSubscriber));
+    User user = ObjectMapperUtil.mapToSaveUser(signupRequestRequestEntity, appSubscriptions, pictureDocId);
+    User savedUser = userService.saveUser(user);
+    notificationService.sendEmailVerificationMail(savedUser);
+    return new SignupResponse(savedAppSubscriber.getId());
+  }
+
+  private void validateSubscriberAnUser(SignupRequest signupRequest) {
     appSubscriberDao.findByEmailAndStatusNot(signupRequest.getEmail(), Status.DELETED)
         .ifPresent(s -> {throw buildException(AbhaExceptions.ACCOUNT_ALREADY_PRESENT);});
-    AppSubscriber appSubscriber = ObjectMapperUtil.mapToSaveSubscriber(signupRequestRequestEntity);
-    AppSubscriber savedAppSubscriber = appSubscriberDao.saveAppSubscriber(appSubscriber);
-    AppSubscriptions appSubscriptions = mapToSaveAppSubscriptions(appSubscriber, signupRequest);
-    appSubscriptionService.saveAppSubscription(appSubscriptions);
-    User user = ObjectMapperUtil.mapToSaveUser(signupRequestRequestEntity, savedAppSubscriber);
-    User savedUser = userService.saveUser(user);
-    return null;
+    userService.findByEmailAndStatusNot(signupRequest.getEmail(), Status.DELETED)
+        .ifPresent(u -> {throw buildException(AbhaExceptions.USER_ACCOUNT_ALREADY_PRESENT);});
   }
 
   private AppSubscriptions mapToSaveAppSubscriptions(
@@ -70,6 +80,8 @@ public class AppSubscriberServiceImpl implements AppSubscriberService {
         .subscriptionPlan(subscriptionPlan)
         .startDateTime(Utils.getDatePlusDays(0))
         .endDateTime(Utils.getDatePlusDays(CommonUtils.getDaysByCycle(subscriptionPlan.getPlanCycle())))
+        .status(Status.ACTIVE)
+        .createdBy("0")
         .build();
   }
 }
