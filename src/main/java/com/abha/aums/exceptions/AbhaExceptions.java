@@ -24,7 +24,27 @@ public enum AbhaExceptions implements BusinessExceptionDefintion {
   USER_ACCOUNT_ALREADY_PRESENT(1007, ErrorCategory.ERROR, ExceptionTypes.BAD_REQUEST_ERROR,
       "User account already present!"),
   INVALID_VERIFICATION_URL(1008, ErrorCategory.ERROR, ExceptionTypes.BAD_REQUEST_ERROR,
-      "Invalid verification URL!");
+      "Invalid verification URL!"),
+  SUBS_UPDATE_DETAILS_MISSING(1009, ErrorCategory.ERROR, ExceptionTypes.VALIDATION_ERROR,
+      "Subscription details missing!"),
+  PHONE_NUMBER_MISSING(1010, ErrorCategory.ERROR, ExceptionTypes.VALIDATION_ERROR,
+      "Phone number is missing!"),
+  REFERENCE_MISSING(1011, ErrorCategory.ERROR, ExceptionTypes.VALIDATION_ERROR,
+      "Reference is missing!"),
+  COMPANY_NAME_MISSING(1012, ErrorCategory.ERROR, ExceptionTypes.VALIDATION_ERROR,
+      "Company name is missing!"),
+  COMPANY_SIZE_MISSING(1013, ErrorCategory.ERROR, ExceptionTypes.VALIDATION_ERROR,
+      "Company size is missing!"),
+  SALES_TEAM_SIZE_MISSING(1014, ErrorCategory.ERROR, ExceptionTypes.VALIDATION_ERROR,
+      "Sales team size is missing!"),
+  INDUSTRY_MISSING(1015, ErrorCategory.ERROR, ExceptionTypes.VALIDATION_ERROR,
+      "Industry type is missing!"),
+  CRM_PRIORITIES_MISSING(1016, ErrorCategory.ERROR, ExceptionTypes.VALIDATION_ERROR,
+      "CRM Properties is missing!"),
+  APP_SUBSCRIBER_ID_MISSING(1017, ErrorCategory.ERROR, ExceptionTypes.VALIDATION_ERROR,
+      "App subscriber id is missing!"),
+  APP_SUBSCRIBER_NOT_FOUND(1018, ErrorCategory.ERROR, ExceptionTypes.BAD_REQUEST_ERROR,
+      "App subscriber not found!");
 
   private final int businessErrorCode;
   private final ErrorCategory errorCategory;

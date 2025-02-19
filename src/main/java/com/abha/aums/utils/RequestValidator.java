@@ -36,10 +36,13 @@ public class RequestValidator {
       throw buildException(AbhaExceptions.SUBS_UPDATE_DETAILS_MISSING);
     }
     SubscriberDetailsRequest subscriberDetailsRequest = subscriberDetailsReqEntity.getBody();
+    if (Objects.isNull(subscriberDetailsRequest.getAppSubscriberId())) {
+      throw buildException(AbhaExceptions.APP_SUBSCRIBER_ID_MISSING);
+    }
     if (StringUtils.isEmpty(subscriberDetailsRequest.getPhone())) {
       throw buildException(AbhaExceptions.PHONE_NUMBER_MISSING);
     }
-    if (StringUtils.isEmpty(subscriberDetailsRequest.getReference())) {
+    if (StringUtils.isEmpty(subscriberDetailsRequest.getEntityReference())) {
       throw buildException(AbhaExceptions.REFERENCE_MISSING);
     }
     if (StringUtils.isEmpty(subscriberDetailsRequest.getCompanyName())) {

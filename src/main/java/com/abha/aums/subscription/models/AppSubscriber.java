@@ -1,12 +1,18 @@
 package com.abha.aums.subscription.models;
 
 import com.abha.aums.shared.models.BaseEntity;
+import com.abha.aums.shared.models.CrmPriority;
 import com.abha.sharedlibrary.shared.enums.Industry;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,4 +45,11 @@ public class AppSubscriber extends BaseEntity {
   private String salesTeamSize;
   @Enumerated(EnumType.STRING)
   private Industry industry;
+  @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+  @JoinTable(
+      name = "tbl_subscriber_priority",
+      joinColumns = @JoinColumn(name = "subscriber_id"),
+      inverseJoinColumns = @JoinColumn(name = "priority_id")
+  )
+  private Set<CrmPriority> crmPriorities;
 }

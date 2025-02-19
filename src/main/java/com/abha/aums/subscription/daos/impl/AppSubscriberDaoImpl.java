@@ -25,4 +25,9 @@ public class AppSubscriberDaoImpl implements AppSubscriberDao {
   public AppSubscriber saveAppSubscriber(AppSubscriber appSubscriber) {
     return appSubscriberRepo.save(appSubscriber);
   }
+
+  @Override
+  public Optional<AppSubscriber> getAppSubscriberById(Long appSubscriberId) {
+    return appSubscriberRepo.findById(appSubscriberId);
+  }
 }

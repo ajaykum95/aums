@@ -8,4 +8,6 @@ public interface AppSubscriberDao {
   Optional<AppSubscriber> findByEmailAndStatusNot(String email, Status status);
 
   AppSubscriber saveAppSubscriber(AppSubscriber appSubscriber);
+
+  Optional<AppSubscriber> getAppSubscriberById(Long appSubscriberId);
 }

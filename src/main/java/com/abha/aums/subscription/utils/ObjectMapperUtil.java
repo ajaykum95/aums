@@ -1,17 +1,19 @@
 package com.abha.aums.subscription.utils;
 
+import com.abha.aums.shared.models.CrmPriority;
 import com.abha.aums.subscription.models.AppSubscriber;
 import com.abha.aums.subscription.models.AppSubscriptions;
 import com.abha.aums.subscription.models.PlanFeature;
 import com.abha.aums.users.models.User;
-import com.abha.aums.utils.CommonUtils;
 import com.abha.aums.utils.SecurityUtil;
 import com.abha.sharedlibrary.aums.request.SignupRequest;
+import com.abha.sharedlibrary.aums.request.SubscriberDetailsRequest;
 import com.abha.sharedlibrary.aums.response.PlanFeatureResponse;
 import com.abha.sharedlibrary.shared.enums.Gender;
 import com.abha.sharedlibrary.shared.enums.Status;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import lombok.experimental.UtilityClass;
 import org.springframework.http.RequestEntity;
 import org.springframework.util.CollectionUtils;
@@ -86,5 +88,18 @@ public class ObjectMapperUtil {
   public static String buildEmailVerificationTemplateParams(User savedUser) {
     //TODO
     return "";
+  }
+
+  public static void mapToUpdaTeAppSubscriber(
+      AppSubscriber appSubscriber, SubscriberDetailsRequest subscriberDetailsRequest,
+      Set<CrmPriority> crmPriorities) {
+    appSubscriber.setPhone(subscriberDetailsRequest.getPhone());
+    appSubscriber.setEntityRef(subscriberDetailsRequest.getEntityReference());
+    appSubscriber.setCompanyName(subscriberDetailsRequest.getCompanyName());
+    appSubscriber.setWebsite(subscriberDetailsRequest.getWebsite());
+    appSubscriber.setCompanySize(subscriberDetailsRequest.getCompanySize());
+    appSubscriber.setSalesTeamSize(subscriberDetailsRequest.getSalesTeamSize());
+    appSubscriber.setIndustry(subscriberDetailsRequest.getIndustry());
+    appSubscriber.setCrmPriorities(crmPriorities);
   }
 }

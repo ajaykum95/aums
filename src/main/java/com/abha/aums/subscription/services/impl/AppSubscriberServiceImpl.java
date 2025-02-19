@@ -7,6 +7,8 @@ import com.abha.aums.config.EmailTemplateConfig;
 import com.abha.aums.config.TemplatesConfigMap;
 import com.abha.aums.exceptions.AbhaExceptions;
 import com.abha.aums.integration.enms.NotificationService;
+import com.abha.aums.shared.models.CrmPriority;
+import com.abha.aums.shared.services.CrmPriorityService;
 import com.abha.aums.subscription.daos.AppSubscriberDao;
 import com.abha.aums.subscription.models.AppSubscriber;
 import com.abha.aums.subscription.models.AppSubscriptions;
@@ -19,18 +21,23 @@ import com.abha.aums.users.models.User;
 import com.abha.aums.users.services.UserService;
 import com.abha.aums.utils.CommonUtils;
 import com.abha.sharedlibrary.aums.request.SignupRequest;
+import com.abha.sharedlibrary.aums.request.SubscriberDetailsRequest;
 import com.abha.sharedlibrary.aums.response.SignupResponse;
 import com.abha.sharedlibrary.enms.enums.Language;
 import com.abha.sharedlibrary.enms.enums.NotificationType;
 import com.abha.sharedlibrary.enms.request.EmailMetadata;
 import com.abha.sharedlibrary.enms.request.SendNotificationRequest;
 import com.abha.sharedlibrary.shared.common.Utils;
+import com.abha.sharedlibrary.shared.common.response.CommonResponse;
+import com.abha.sharedlibrary.shared.constants.AppConstant;
 import com.abha.sharedlibrary.shared.enums.PlanType;
 import com.abha.sharedlibrary.shared.enums.Status;
 import jakarta.transaction.Transactional;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -45,12 +52,14 @@ public class AppSubscriberServiceImpl implements AppSubscriberService {
   private Integer pictureDocId;
   private final TemplatesConfigMap templatesConfigMap;
   private final EmailConfigMap emailConfigMap;
+  private final CrmPriorityService crmPriorityService;
 
   @Autowired
   public AppSubscriberServiceImpl(
       AppSubscriberDao appSubscriberDao, UserService userService, NotificationService notificationService,
       SubscriptionPlanService subscriptionPlanService, AppSubscriptionService appSubscriptionService,
-      TemplatesConfigMap templatesConfigMap, EmailConfigMap emailConfigMap) {
+      TemplatesConfigMap templatesConfigMap, EmailConfigMap emailConfigMap,
+      CrmPriorityService crmPriorityService) {
     this.appSubscriberDao = appSubscriberDao;
     this.userService = userService;
     this.notificationService = notificationService;
@@ -58,6 +67,7 @@ public class AppSubscriberServiceImpl implements AppSubscriberService {
     this.appSubscriptionService = appSubscriptionService;
     this.templatesConfigMap = templatesConfigMap;
     this.emailConfigMap = emailConfigMap;
+    this.crmPriorityService = crmPriorityService;
   }
 
   @Transactional
@@ -73,6 +83,19 @@ public class AppSubscriberServiceImpl implements AppSubscriberService {
     User savedUser = userService.saveUser(user);
     sendVerifyMailToSubscriber(savedUser);
     return new SignupResponse(savedAppSubscriber.getId());
+  }
+
+  @Override
+  public CommonResponse updateSubscriberDetails(
+      ResponseEntity<SubscriberDetailsRequest> subscriberDetailsReqEntity) {
+    SubscriberDetailsRequest subscriberDetailsRequest = subscriberDetailsReqEntity.getBody();
+    AppSubscriber appSubscriber = appSubscriberDao.getAppSubscriberById(
+        subscriberDetailsRequest.getAppSubscriberId())
+        .orElseThrow(() -> buildException(AbhaExceptions.APP_SUBSCRIBER_NOT_FOUND));
+    Set<CrmPriority> crmPriorities = crmPriorityService.findByIdIn(subscriberDetailsRequest.getCrmPriorityIds());
+    ObjectMapperUtil.mapToUpdaTeAppSubscriber(appSubscriber, subscriberDetailsRequest, crmPriorities);
+    appSubscriberDao.saveAppSubscriber(appSubscriber);
+    return new CommonResponse(AppConstant.SUBSCRIBER_DETAILS_UPDATED);
   }
 
   private void sendVerifyMailToSubscriber(User savedUser) {
