@@ -2,6 +2,9 @@ package com.abha.aums.subscription.services.impl;
 
 import static com.abha.sharedlibrary.shared.common.ExceptionUtil.buildException;
 
+import com.abha.aums.config.EmailConfigMap;
+import com.abha.aums.config.EmailTemplateConfig;
+import com.abha.aums.config.TemplatesConfigMap;
 import com.abha.aums.exceptions.AbhaExceptions;
 import com.abha.aums.integration.enms.NotificationService;
 import com.abha.aums.subscription.daos.AppSubscriberDao;
@@ -17,6 +20,10 @@ import com.abha.aums.users.services.UserService;
 import com.abha.aums.utils.CommonUtils;
 import com.abha.sharedlibrary.aums.request.SignupRequest;
 import com.abha.sharedlibrary.aums.response.SignupResponse;
+import com.abha.sharedlibrary.enms.enums.Language;
+import com.abha.sharedlibrary.enms.enums.NotificationType;
+import com.abha.sharedlibrary.enms.request.EmailMetadata;
+import com.abha.sharedlibrary.enms.request.SendNotificationRequest;
 import com.abha.sharedlibrary.shared.common.Utils;
 import com.abha.sharedlibrary.shared.enums.PlanType;
 import com.abha.sharedlibrary.shared.enums.Status;
@@ -36,16 +43,21 @@ public class AppSubscriberServiceImpl implements AppSubscriberService {
   private final AppSubscriptionService appSubscriptionService;
   @Value("${profile.picture.default.pictureDocId}")
   private Integer pictureDocId;
+  private final TemplatesConfigMap templatesConfigMap;
+  private final EmailConfigMap emailConfigMap;
 
   @Autowired
   public AppSubscriberServiceImpl(
       AppSubscriberDao appSubscriberDao, UserService userService, NotificationService notificationService,
-      SubscriptionPlanService subscriptionPlanService, AppSubscriptionService appSubscriptionService) {
+      SubscriptionPlanService subscriptionPlanService, AppSubscriptionService appSubscriptionService,
+      TemplatesConfigMap templatesConfigMap, EmailConfigMap emailConfigMap) {
     this.appSubscriberDao = appSubscriberDao;
     this.userService = userService;
     this.notificationService = notificationService;
     this.subscriptionPlanService = subscriptionPlanService;
     this.appSubscriptionService = appSubscriptionService;
+    this.templatesConfigMap = templatesConfigMap;
+    this.emailConfigMap = emailConfigMap;
   }
 
   @Transactional
@@ -65,20 +77,37 @@ public class AppSubscriberServiceImpl implements AppSubscriberService {
 
   private void sendVerifyMailToSubscriber(User savedUser) {
     String params = ObjectMapperUtil.buildEmailVerificationTemplateParams(savedUser);
-    notificationService.sendEmailVerificationMail();
+    EmailTemplateConfig configMapEmails = templatesConfigMap.getEmails();
+    SendNotificationRequest sendNotificationRequest = SendNotificationRequest.builder()
+        .createdBy(savedUser.getId().toString())
+        .customerId(savedUser.getId())
+        .notificationType(NotificationType.EMAIL_VERIFICATION)
+        .preferredLanguage(Language.EN)
+        .emailInfo(EmailMetadata.builder()
+            .parameterMap(params)
+            .domsTemplateId(configMapEmails.getEmailVerify())
+            .sendTo(savedUser.getEmail())
+            .sendFrom(emailConfigMap.getPrimary())
+            .build())
+        .build();
+    notificationService.sendEmailVerificationMail(sendNotificationRequest);
   }
 
   private void validateSubscriberAnUser(SignupRequest signupRequest) {
     appSubscriberDao.findByEmailAndStatusNot(signupRequest.getEmail(), Status.DELETED)
-        .ifPresent(s -> {throw buildException(AbhaExceptions.ACCOUNT_ALREADY_PRESENT);});
+        .ifPresent(s -> {
+          throw buildException(AbhaExceptions.ACCOUNT_ALREADY_PRESENT);
+        });
     userService.findByEmailAndStatusNot(signupRequest.getEmail(), Status.DELETED)
-        .ifPresent(u -> {throw buildException(AbhaExceptions.USER_ACCOUNT_ALREADY_PRESENT);});
+        .ifPresent(u -> {
+          throw buildException(AbhaExceptions.USER_ACCOUNT_ALREADY_PRESENT);
+        });
   }
 
   private AppSubscriptions mapToSaveAppSubscriptions(
       AppSubscriber appSubscriber) {
     SubscriptionPlan subscriptionPlan = subscriptionPlanService.fetchPlanByTypeAndStatus(
-        PlanType.TRIAL, Status.ACTIVE)
+            PlanType.TRIAL, Status.ACTIVE)
         .orElseThrow(() -> buildException(AbhaExceptions.TRIAL_PLAN_MISSING));
     return AppSubscriptions.builder()
         .appSubscriber(appSubscriber)

@@ -8,4 +8,6 @@ public interface UserService {
   User saveUser(User user);
 
   Optional<User> findByEmailAndStatusNot(String email, Status status);
+
+  boolean verifyUser(String token);
 }

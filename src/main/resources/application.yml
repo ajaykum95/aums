@@ -50,3 +50,10 @@ profile:
   picture:
     default:
       pictureDocId: 1
+
+email:
+  senders:
+    primary: no-reply@yourdomain.com
+    support: support@yourdomain.com
+    billing: billing@yourdomain.com
+    marketing: marketing@yourdomain.com

@@ -22,6 +22,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 
 @ExtendWith(MockitoExtension.class)
 public class SubscriptionPlanControllerTest {
@@ -43,9 +44,9 @@ public class SubscriptionPlanControllerTest {
         URI.create("/test"));
     when(subscriptionPlanService.fetchAllActiveSubscriptionPlans()).
         thenReturn(Collections.singletonList(SubscriptionPlanResponse.builder().id(1L).build()));
-    List<SubscriptionPlanResponse> subscriptionPlanResponses =
+    ResponseEntity<List<SubscriptionPlanResponse>> listResponseEntity =
         subscriptionPlanController.fetchSubscriptionPlans(requestEntity);
-    assertNotNull(subscriptionPlanResponses);
-    assertEquals(1, subscriptionPlanResponses.size());
+    assertNotNull(listResponseEntity);
+    assertEquals(1, listResponseEntity.getBody().size());
   }
 }

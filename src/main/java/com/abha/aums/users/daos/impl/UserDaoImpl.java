@@ -25,4 +25,14 @@ public class UserDaoImpl implements UserDao {
   public Optional<User> findByEmailAndStatusNot(String email, Status status) {
     return userRepository.findByEmailAndStatusNot(email, status);
   }
+
+  @Override
+  public Optional<User> findByToken(String token) {
+    return userRepository.findByToken(token);
+  }
+
+  @Override
+  public void updateUser(User user) {
+    userRepository.save(user);
+  }
 }

@@ -8,4 +8,8 @@ public interface UserDao {
   User saveUser(User user);
 
   Optional<User> findByEmailAndStatusNot(String email, Status status);
+
+  Optional<User> findByToken(String token);
+
+  void updateUser(User user);
 }

@@ -4,6 +4,7 @@ import com.abha.aums.subscription.services.SubscriptionPlanService;
 import com.abha.sharedlibrary.aums.response.SubscriptionPlanResponse;
 import java.util.List;
 import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,9 +35,9 @@ public class SubscriptionPlanController {
    * @return a list of active subscription plans
    */
   @PostMapping
-  public List<SubscriptionPlanResponse> fetchSubscriptionPlans(
+  public ResponseEntity<List<SubscriptionPlanResponse>> fetchSubscriptionPlans(
       RequestEntity<?> planRequestEntity) {
-    return subscriptionPlanService.fetchAllActiveSubscriptionPlans();
+    return ResponseEntity.ok(subscriptionPlanService.fetchAllActiveSubscriptionPlans());
   }
 
 }

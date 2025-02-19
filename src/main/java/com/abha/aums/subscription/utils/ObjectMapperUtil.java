@@ -82,4 +82,9 @@ public class ObjectMapperUtil {
         .token(SecurityUtil.generateSecureToken())
         .build();
   }
+
+  public static String buildEmailVerificationTemplateParams(User savedUser) {
+    //TODO
+    return "";
+  }
 }

@@ -22,7 +22,9 @@ public enum AbhaExceptions implements BusinessExceptionDefintion {
   TRIAL_PLAN_MISSING(1006, ErrorCategory.ERROR, ExceptionTypes.INTERNAL_ERROR,
       "Trial plan not found!"),
   USER_ACCOUNT_ALREADY_PRESENT(1007, ErrorCategory.ERROR, ExceptionTypes.BAD_REQUEST_ERROR,
-      "User account already present!");
+      "User account already present!"),
+  INVALID_VERIFICATION_URL(1008, ErrorCategory.ERROR, ExceptionTypes.BAD_REQUEST_ERROR,
+      "Invalid verification URL!");
 
   private final int businessErrorCode;
   private final ErrorCategory errorCategory;

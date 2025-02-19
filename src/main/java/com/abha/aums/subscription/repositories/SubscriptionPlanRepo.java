@@ -1,8 +1,10 @@
 package com.abha.aums.subscription.repositories;
 
 import com.abha.aums.subscription.models.SubscriptionPlan;
+import com.abha.sharedlibrary.shared.enums.PlanType;
 import com.abha.sharedlibrary.shared.enums.Status;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -17,4 +19,6 @@ public interface SubscriptionPlanRepo extends JpaRepository<SubscriptionPlan, Lo
    * @return a list of subscription plans matching the specified status
    */
   List<SubscriptionPlan> findByStatus(Status status);
+
+  Optional<SubscriptionPlan> findByPlanTypeAndStatus(PlanType planType, Status status);
 }
