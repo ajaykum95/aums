@@ -21,4 +21,6 @@ public interface SubscriptionPlanRepo extends JpaRepository<SubscriptionPlan, Lo
   List<SubscriptionPlan> findByStatus(Status status);
 
   Optional<SubscriptionPlan> findByPlanTypeAndStatus(PlanType planType, Status status);
+
+  Optional<SubscriptionPlan> findByIdAndStatusNot(Long subscriptionPlanId, Status status);
 }

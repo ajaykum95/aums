@@ -1,8 +1,8 @@
 package com.abha.aums.users.controllers;
 
 import com.abha.aums.users.services.UserService;
+import com.abha.aums.utils.AppConstant;
 import com.abha.sharedlibrary.shared.common.response.CommonResponse;
-import com.abha.sharedlibrary.shared.constants.AppConstant;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

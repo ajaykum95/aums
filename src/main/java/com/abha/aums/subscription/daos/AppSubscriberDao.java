@@ -9,5 +9,7 @@ public interface AppSubscriberDao {
 
   AppSubscriber saveAppSubscriber(AppSubscriber appSubscriber);
 
-  Optional<AppSubscriber> getAppSubscriberById(Long appSubscriberId);
+  AppSubscriber getAppSubscriberById(Long appSubscriberId);
+
+  AppSubscriber findByIdAndStatusNot(Long subscriberId, Status status);
 }

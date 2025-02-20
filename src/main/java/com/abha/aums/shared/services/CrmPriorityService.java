@@ -5,5 +5,5 @@ import java.util.List;
 import java.util.Set;
 
 public interface CrmPriorityService {
-  Set<CrmPriority> findByIdIn(List<Integer> crmPriorityIds);
+  Set<CrmPriority> findByIdIn(java.util.List<java.lang.Integer> crmPriorityIds);
 }

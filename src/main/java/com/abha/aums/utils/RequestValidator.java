@@ -3,6 +3,7 @@ package com.abha.aums.utils;
 import com.abha.aums.exceptions.AbhaExceptions;
 import com.abha.sharedlibrary.aums.request.SignupRequest;
 import com.abha.sharedlibrary.aums.request.SubscriberDetailsRequest;
+import com.abha.sharedlibrary.aums.request.SubscriptionUpgradeReq;
 import com.abha.sharedlibrary.shared.validator.EmailValidator;
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
@@ -59,6 +60,23 @@ public class RequestValidator {
     }
     if (CollectionUtils.isEmpty(subscriberDetailsRequest.getCrmPriorityIds())) {
       throw buildException(AbhaExceptions.CRM_PRIORITIES_MISSING);
+    }
+  }
+
+  public static void validatePlanUpgradeReq(
+      RequestEntity<SubscriptionUpgradeReq> subscriptionUpgradeReqEntity) {
+    if (Objects.isNull(subscriptionUpgradeReqEntity)) {
+      throw buildException(AbhaExceptions.SUBS_UPGRADE_PLAN_MISSING);
+    }
+    SubscriptionUpgradeReq subscriptionUpgradeReq = subscriptionUpgradeReqEntity.getBody();
+    if (Objects.isNull(subscriptionUpgradeReq.getSubscriberId())) {
+      throw buildException(AbhaExceptions.APP_SUBSCRIBER_ID_MISSING);
+    }
+    if (Objects.isNull(subscriptionUpgradeReq.getSubscriptionPlanId())) {
+      throw buildException(AbhaExceptions.SUBS_PLAN_ID_MISSING);
+    }
+    if (Objects.isNull(subscriptionUpgradeReq.getPaymentRefId())) {
+      throw buildException(AbhaExceptions.PAYMENT_REFERENCE_ID_MISSING);
     }
   }
 }

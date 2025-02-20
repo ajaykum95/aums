@@ -19,7 +19,7 @@ import com.abha.aums.subscription.services.SubscriptionPlanService;
 import com.abha.aums.subscription.utils.ObjectMapperUtil;
 import com.abha.aums.users.models.User;
 import com.abha.aums.users.services.UserService;
-import com.abha.aums.utils.CommonUtils;
+import com.abha.aums.utils.AppConstant;
 import com.abha.sharedlibrary.aums.request.SignupRequest;
 import com.abha.sharedlibrary.aums.request.SubscriberDetailsRequest;
 import com.abha.sharedlibrary.aums.response.SignupResponse;
@@ -27,9 +27,7 @@ import com.abha.sharedlibrary.enms.enums.Language;
 import com.abha.sharedlibrary.enms.enums.NotificationType;
 import com.abha.sharedlibrary.enms.request.EmailMetadata;
 import com.abha.sharedlibrary.enms.request.SendNotificationRequest;
-import com.abha.sharedlibrary.shared.common.Utils;
 import com.abha.sharedlibrary.shared.common.response.CommonResponse;
-import com.abha.sharedlibrary.shared.constants.AppConstant;
 import com.abha.sharedlibrary.shared.enums.PlanType;
 import com.abha.sharedlibrary.shared.enums.Status;
 import jakarta.transaction.Transactional;
@@ -90,8 +88,7 @@ public class AppSubscriberServiceImpl implements AppSubscriberService {
       ResponseEntity<SubscriberDetailsRequest> subscriberDetailsReqEntity) {
     SubscriberDetailsRequest subscriberDetailsRequest = subscriberDetailsReqEntity.getBody();
     AppSubscriber appSubscriber = appSubscriberDao.getAppSubscriberById(
-        subscriberDetailsRequest.getAppSubscriberId())
-        .orElseThrow(() -> buildException(AbhaExceptions.APP_SUBSCRIBER_NOT_FOUND));
+        subscriberDetailsRequest.getAppSubscriberId());
     Set<CrmPriority> crmPriorities = crmPriorityService.findByIdIn(subscriberDetailsRequest.getCrmPriorityIds());
     ObjectMapperUtil.mapToUpdaTeAppSubscriber(appSubscriber, subscriberDetailsRequest, crmPriorities);
     appSubscriberDao.saveAppSubscriber(appSubscriber);
@@ -132,13 +129,6 @@ public class AppSubscriberServiceImpl implements AppSubscriberService {
     SubscriptionPlan subscriptionPlan = subscriptionPlanService.fetchPlanByTypeAndStatus(
             PlanType.TRIAL, Status.ACTIVE)
         .orElseThrow(() -> buildException(AbhaExceptions.TRIAL_PLAN_MISSING));
-    return AppSubscriptions.builder()
-        .appSubscriber(appSubscriber)
-        .subscriptionPlan(subscriptionPlan)
-        .startDateTime(Utils.getDatePlusDays(0))
-        .endDateTime(Utils.getDatePlusDays(CommonUtils.getDaysByCycle(subscriptionPlan.getPlanCycle())))
-        .status(Status.ACTIVE)
-        .createdBy("0")
-        .build();
+    return ObjectMapperUtil.mapToSaveSubscriptionPlan(subscriptionPlan, appSubscriber, "0");
   }
 }

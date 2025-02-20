@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AppSubscriberRepo extends JpaRepository<AppSubscriber, Long> {
   Optional<AppSubscriber> findByEmailAndStatusNot(String email, Status status);
+
+  Optional<AppSubscriber> findByIdAndStatusNot(Long subscriberId, Status status);
 }

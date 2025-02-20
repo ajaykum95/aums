@@ -44,7 +44,19 @@ public enum AbhaExceptions implements BusinessExceptionDefintion {
   APP_SUBSCRIBER_ID_MISSING(1017, ErrorCategory.ERROR, ExceptionTypes.VALIDATION_ERROR,
       "App subscriber id is missing!"),
   APP_SUBSCRIBER_NOT_FOUND(1018, ErrorCategory.ERROR, ExceptionTypes.BAD_REQUEST_ERROR,
-      "App subscriber not found!");
+      "App subscriber not found!"),
+  SUBS_UPGRADE_PLAN_MISSING(1019, ErrorCategory.ERROR, ExceptionTypes.VALIDATION_ERROR,
+      "Subscription upgrade plan request is missing!"),
+  SUBS_PLAN_ID_MISSING(1020, ErrorCategory.ERROR, ExceptionTypes.VALIDATION_ERROR,
+      "Subscription plan id is missing!"),
+  PAYMENT_REFERENCE_ID_MISSING(1021, ErrorCategory.ERROR, ExceptionTypes.VALIDATION_ERROR,
+      "Payment reference id is missing!"),
+  SUBSCRIPTION_PLAN_NOT_FOUND(1022, ErrorCategory.ERROR, ExceptionTypes.BAD_REQUEST_ERROR,
+      "Subscription plan not found!"),
+  NO_USER_FOUND(1023, ErrorCategory.ERROR, ExceptionTypes.BAD_REQUEST_ERROR,
+      "User not found!"),
+  PAYMENT_INFO_NOT_FOUND(1024, ErrorCategory.ERROR, ExceptionTypes.BAD_REQUEST_ERROR,
+      "Payment info not found!");
 
   private final int businessErrorCode;
   private final ErrorCategory errorCategory;

@@ -1,5 +1,6 @@
 package com.abha.aums.subscription.daos.impl;
 
+import com.abha.aums.exceptions.AbhaExceptions;
 import com.abha.aums.subscription.daos.SubscriptionPlanDao;
 import com.abha.aums.subscription.models.SubscriptionPlan;
 import com.abha.aums.subscription.repositories.SubscriptionPlanRepo;
@@ -8,6 +9,8 @@ import com.abha.sharedlibrary.shared.enums.Status;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
+
+import static com.abha.sharedlibrary.shared.common.ExceptionUtil.buildException;
 
 /**
  * Implementation of the {@link SubscriptionPlanDao} interface.
@@ -41,5 +44,11 @@ public class SubscriptionPlanDaoImpl implements SubscriptionPlanDao {
   @Override
   public Optional<SubscriptionPlan> findByPlanTypeAndStatus(PlanType planType, Status status) {
     return subscriptionPlanRepo.findByPlanTypeAndStatus(planType, status);
+  }
+
+  @Override
+  public SubscriptionPlan getPlanByIdAndStatusNot(Long subscriptionPlanId, Status status) {
+    return subscriptionPlanRepo.findByIdAndStatusNot(subscriptionPlanId, status)
+        .orElseThrow(() -> buildException(AbhaExceptions.SUBSCRIPTION_PLAN_NOT_FOUND));
   }
 }

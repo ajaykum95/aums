@@ -21,4 +21,6 @@ public interface SubscriptionPlanDao {
   List<SubscriptionPlan> fetchAllSubscriptionPlanByStatus(Status status);
 
   Optional<SubscriptionPlan> findByPlanTypeAndStatus(PlanType planType, Status status);
+
+  SubscriptionPlan getPlanByIdAndStatusNot(Long subscriptionPlanId, Status status);
 }

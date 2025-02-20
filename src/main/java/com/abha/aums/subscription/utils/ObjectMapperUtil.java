@@ -4,11 +4,14 @@ import com.abha.aums.shared.models.CrmPriority;
 import com.abha.aums.subscription.models.AppSubscriber;
 import com.abha.aums.subscription.models.AppSubscriptions;
 import com.abha.aums.subscription.models.PlanFeature;
+import com.abha.aums.subscription.models.SubscriptionPlan;
 import com.abha.aums.users.models.User;
+import com.abha.aums.utils.CommonUtils;
 import com.abha.aums.utils.SecurityUtil;
 import com.abha.sharedlibrary.aums.request.SignupRequest;
 import com.abha.sharedlibrary.aums.request.SubscriberDetailsRequest;
 import com.abha.sharedlibrary.aums.response.PlanFeatureResponse;
+import com.abha.sharedlibrary.shared.common.Utils;
 import com.abha.sharedlibrary.shared.enums.Gender;
 import com.abha.sharedlibrary.shared.enums.Status;
 import java.util.ArrayList;
@@ -101,5 +104,17 @@ public class ObjectMapperUtil {
     appSubscriber.setSalesTeamSize(subscriberDetailsRequest.getSalesTeamSize());
     appSubscriber.setIndustry(subscriberDetailsRequest.getIndustry());
     appSubscriber.setCrmPriorities(crmPriorities);
+  }
+
+  public static AppSubscriptions mapToSaveSubscriptionPlan(
+      SubscriptionPlan subscriptionPlan, AppSubscriber appSubscriber, String userId) {
+    return AppSubscriptions.builder()
+        .appSubscriber(appSubscriber)
+        .subscriptionPlan(subscriptionPlan)
+        .startDateTime(Utils.getDatePlusDays(0))
+        .endDateTime(Utils.getDatePlusDays(CommonUtils.getDaysByCycle(subscriptionPlan.getPlanCycle())))
+        .status(Status.ACTIVE)
+        .createdBy(userId)
+        .build();
   }
 }
