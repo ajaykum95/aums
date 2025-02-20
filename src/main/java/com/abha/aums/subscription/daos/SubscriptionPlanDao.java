@@ -1,5 +1,6 @@
 package com.abha.aums.subscription.daos;
 
+import com.abha.aums.subscription.models.PendingSubscriptionPlan;
 import com.abha.aums.subscription.models.SubscriptionPlan;
 import com.abha.sharedlibrary.shared.enums.PlanType;
 import com.abha.sharedlibrary.shared.enums.Status;
@@ -23,4 +24,6 @@ public interface SubscriptionPlanDao {
   Optional<SubscriptionPlan> findByPlanTypeAndStatus(PlanType planType, Status status);
 
   SubscriptionPlan getPlanByIdAndStatusNot(Long subscriptionPlanId, Status status);
+
+  void savePendingSubscriptionPlan(PendingSubscriptionPlan pendingSubscriptionPlan);
 }

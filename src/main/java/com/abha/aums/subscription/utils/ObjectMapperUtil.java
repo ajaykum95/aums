@@ -3,6 +3,7 @@ package com.abha.aums.subscription.utils;
 import com.abha.aums.shared.models.CrmPriority;
 import com.abha.aums.subscription.models.AppSubscriber;
 import com.abha.aums.subscription.models.AppSubscriptions;
+import com.abha.aums.subscription.models.PendingSubscriptionPlan;
 import com.abha.aums.subscription.models.PlanFeature;
 import com.abha.aums.subscription.models.SubscriptionPlan;
 import com.abha.aums.users.models.User;
@@ -10,8 +11,10 @@ import com.abha.aums.utils.CommonUtils;
 import com.abha.aums.utils.SecurityUtil;
 import com.abha.sharedlibrary.aums.request.SignupRequest;
 import com.abha.sharedlibrary.aums.request.SubscriberDetailsRequest;
+import com.abha.sharedlibrary.aums.request.SubscriptionUpgradeReq;
 import com.abha.sharedlibrary.aums.response.PlanFeatureResponse;
 import com.abha.sharedlibrary.shared.common.Utils;
+import com.abha.sharedlibrary.shared.enums.ActivityStatus;
 import com.abha.sharedlibrary.shared.enums.Gender;
 import com.abha.sharedlibrary.shared.enums.Status;
 import java.util.ArrayList;
@@ -115,6 +118,19 @@ public class ObjectMapperUtil {
         .endDateTime(Utils.getDatePlusDays(CommonUtils.getDaysByCycle(subscriptionPlan.getPlanCycle())))
         .status(Status.ACTIVE)
         .createdBy(userId)
+        .build();
+  }
+
+  public static PendingSubscriptionPlan mapToSavePendingPayment(
+      AppSubscriber appSubscriber, SubscriptionPlan subscriptionPlan,
+      RequestEntity<SubscriptionUpgradeReq> subscriptionUpgradeReqEntity, ActivityStatus activityStatus) {
+    String userId = CommonUtils.getUserId(subscriptionUpgradeReqEntity);
+    return PendingSubscriptionPlan.builder()
+        .createdBy(userId)
+        .appSubscriber(appSubscriber)
+        .subscriptionPlan(subscriptionPlan)
+        .paymentEntityId(subscriptionUpgradeReqEntity.getBody().getPaymentEntityId())
+        .activityStatus(activityStatus)
         .build();
   }
 }

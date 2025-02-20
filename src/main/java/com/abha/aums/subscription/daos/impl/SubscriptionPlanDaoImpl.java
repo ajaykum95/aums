@@ -2,12 +2,15 @@ package com.abha.aums.subscription.daos.impl;
 
 import com.abha.aums.exceptions.AbhaExceptions;
 import com.abha.aums.subscription.daos.SubscriptionPlanDao;
+import com.abha.aums.subscription.models.PendingSubscriptionPlan;
 import com.abha.aums.subscription.models.SubscriptionPlan;
+import com.abha.aums.subscription.repositories.PendingSubscriptionPlanRepo;
 import com.abha.aums.subscription.repositories.SubscriptionPlanRepo;
 import com.abha.sharedlibrary.shared.enums.PlanType;
 import com.abha.sharedlibrary.shared.enums.Status;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import static com.abha.sharedlibrary.shared.common.ExceptionUtil.buildException;
@@ -20,14 +23,18 @@ import static com.abha.sharedlibrary.shared.common.ExceptionUtil.buildException;
 public class SubscriptionPlanDaoImpl implements SubscriptionPlanDao {
 
   private final SubscriptionPlanRepo subscriptionPlanRepo;
+  private final PendingSubscriptionPlanRepo pendingSubscriptionPlanRepo;
 
   /**
    * Constructs a new {@code SubscriptionPlanDaoImpl} with the specified repository.
    *
    * @param subscriptionPlanRepo the repository used to access subscription plan data
    */
-  public SubscriptionPlanDaoImpl(SubscriptionPlanRepo subscriptionPlanRepo) {
+  @Autowired
+  public SubscriptionPlanDaoImpl(
+      SubscriptionPlanRepo subscriptionPlanRepo, PendingSubscriptionPlanRepo pendingSubscriptionPlanRepo) {
     this.subscriptionPlanRepo = subscriptionPlanRepo;
+    this.pendingSubscriptionPlanRepo = pendingSubscriptionPlanRepo;
   }
 
   /**
@@ -50,5 +57,10 @@ public class SubscriptionPlanDaoImpl implements SubscriptionPlanDao {
   public SubscriptionPlan getPlanByIdAndStatusNot(Long subscriptionPlanId, Status status) {
     return subscriptionPlanRepo.findByIdAndStatusNot(subscriptionPlanId, status)
         .orElseThrow(() -> buildException(AbhaExceptions.SUBSCRIPTION_PLAN_NOT_FOUND));
+  }
+
+  @Override
+  public void savePendingSubscriptionPlan(PendingSubscriptionPlan pendingSubscriptionPlan) {
+    pendingSubscriptionPlanRepo.save(pendingSubscriptionPlan);
   }
 }

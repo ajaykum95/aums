@@ -56,7 +56,11 @@ public enum AbhaExceptions implements BusinessExceptionDefintion {
   NO_USER_FOUND(1023, ErrorCategory.ERROR, ExceptionTypes.BAD_REQUEST_ERROR,
       "User not found!"),
   PAYMENT_INFO_NOT_FOUND(1024, ErrorCategory.ERROR, ExceptionTypes.BAD_REQUEST_ERROR,
-      "Payment info not found!");
+      "Payment info not found!"),
+  SUBSCRIPTION_PAN_AMOUNT_INVALID(1025, ErrorCategory.ERROR, ExceptionTypes.BAD_REQUEST_ERROR,
+      "The subscription plan amount is lower than the actual price!"),
+  SOMETHING_WENT_WRONG(1026, ErrorCategory.ERROR, ExceptionTypes.INTERNAL_ERROR,
+      "An error occurred while upgrading subscription plan!");
 
   private final int businessErrorCode;
   private final ErrorCategory errorCategory;
